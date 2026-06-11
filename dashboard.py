@@ -321,6 +321,43 @@ def _load_tasks(spreadsheet_id, sa_json):
     return task_queue.load_tasks(spreadsheet_id, sa_json)
 
 
+def _check_password():
+    """Toont een wachtwoordveld en stopt de app als het wachtwoord ontbreekt of onjuist is.
+
+    Wachtwoord wordt ingesteld via APP_PASSWORD in .env (lokaal) of Streamlit
+    secrets (cloud). De repo is publiek (alleen code, geen credentials), dus
+    deze simpele check houdt het dashboard zelf afgeschermd voor het team.
+    """
+    app_password = _from_secrets("APP_PASSWORD") or os.getenv("APP_PASSWORD")
+    if not app_password:
+        st.error("APP_PASSWORD is niet ingesteld (.env of Streamlit secrets).")
+        st.stop()
+
+    if st.session_state.get("authenticated"):
+        return
+
+    st.markdown(
+        """
+        <div class="ts-header">
+            <div>
+                <span class="ts-name">Social Afbeelding Agent</span>
+                <span class="ts-brandtag">Beelden</span>
+                <div class="ts-sub">Log in om verder te gaan</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    pwd = st.text_input("Wachtwoord", type="password")
+    if st.button("Inloggen", type="primary"):
+        if pwd == app_password:
+            st.session_state["authenticated"] = True
+            st.rerun()
+        else:
+            st.error("Onjuist wachtwoord.")
+    st.stop()
+
+
 def _format_tab_label(tab_name):
     # "Posts_2026_W24" → "2026 · Week 24"
     parts = tab_name.split("_")
@@ -330,7 +367,9 @@ def _format_tab_label(tab_name):
     return tab_name
 
 
-# ── UI: header ────────────────────────────────────────────────────────────────
+# ── UI: login + header ───────────────────────────────────────────────────────
+
+_check_password()
 
 st.markdown(
     """

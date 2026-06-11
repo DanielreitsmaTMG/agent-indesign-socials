@@ -74,7 +74,13 @@ Lokaal draait dit op `.env`-credentials. Voor de Streamlit Cloud-deploy
 configureer je dezelfde waarden via Streamlit secrets
 (`GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_JSON` — of, als het
 JSON-blob te groot is voor één secret, base64-encoded via
-`GOOGLE_SERVICE_ACCOUNT_B64` of opgesplitst in `GOOGLE_SA_B64_1`+`GOOGLE_SA_B64_2`).
+`GOOGLE_SERVICE_ACCOUNT_B64` of opgesplitst in `GOOGLE_SA_B64_1`+`GOOGLE_SA_B64_2`),
+plus `APP_PASSWORD`.
+
+De GitHub-repo is **publiek** (geen credentials erin, alleen code), dus het
+dashboard zit achter een eenvoudig wachtwoordscherm
+(`APP_PASSWORD` in `.env` resp. Streamlit secrets — kies hetzelfde wachtwoord
+op beide plekken en deel het alleen met het team).
 
 ### Lokale worker (verwerkt taken)
 
