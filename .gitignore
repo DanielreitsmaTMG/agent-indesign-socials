@@ -1,0 +1,20 @@
+# Credentials — nooit committen
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Worker job-bestanden (intermediates)
+systems/_job.json
+systems/_job_result.json
+
+# Gegenereerde afbeeldingen (intermediates, opnieuw te genereren)
+output/*
+!output/.gitkeep
+
+# macOS
+.DS_Store
